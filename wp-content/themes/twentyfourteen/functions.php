@@ -113,6 +113,9 @@ function twentyfourteen_setup() {
 
 	// This theme uses its own gallery styles.
 	add_filter( 'use_default_gallery_style', '__return_false' );
+
+	// Indicate widget sidebars can use selective refresh in the Customizer.
+	add_theme_support( 'customize-selective-refresh-widgets' );
 }
 endif; // twentyfourteen_setup
 add_action( 'after_setup_theme', 'twentyfourteen_setup' );
@@ -516,16 +519,4 @@ require get_template_directory() . '/inc/customizer.php';
  */
 if ( ! class_exists( 'Featured_Content' ) && 'plugins.php' !== $GLOBALS['pagenow'] ) {
 	require get_template_directory() . '/inc/featured-content.php';
-}
-
-function remove_core_updates(){
-global $wp_version;return(object) array('last_checked'=> time(),'version_checked'=> $wp_version,);
-}
-add_filter('pre_site_transient_update_core','remove_core_updates');
-add_filter('pre_site_transient_update_plugins','remove_core_updates');
-add_filter('pre_site_transient_update_themes','remove_core_updates');
-
-add_action( 'admin_init', 'wpse_38111' );
-function wpse_38111() {
-    remove_submenu_page( 'index.php', 'update-core.php' );
 }

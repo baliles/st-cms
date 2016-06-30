@@ -103,6 +103,17 @@ function twentyfifteen_setup() {
 		'aside', 'image', 'video', 'quote', 'link', 'gallery', 'status', 'audio', 'chat'
 	) );
 
+	/*
+	 * Enable support for custom logo.
+	 *
+	 * @since Twenty Fifteen 1.5
+	 */
+	add_theme_support( 'custom-logo', array(
+		'height'      => 248,
+		'width'       => 248,
+		'flex-height' => true,
+	) );
+
 	$color_scheme  = twentyfifteen_get_color_scheme();
 	$default_color = trim( $color_scheme[0], '#' );
 
@@ -117,6 +128,9 @@ function twentyfifteen_setup() {
 	 * specifically font, colors, icons, and column width.
 	 */
 	add_editor_style( array( 'css/editor-style.css', 'genericons/genericons.css', twentyfifteen_fonts_url() ) );
+
+	// Indicate widget sidebars can use selective refresh in the Customizer.
+	add_theme_support( 'customize-selective-refresh-widgets' );
 }
 endif; // twentyfifteen_setup
 add_action( 'after_setup_theme', 'twentyfifteen_setup' );
@@ -353,16 +367,3 @@ require get_template_directory() . '/inc/template-tags.php';
  * @since Twenty Fifteen 1.0
  */
 require get_template_directory() . '/inc/customizer.php';
-
-function remove_core_updates(){
-global $wp_version;return(object) array('last_checked'=> time(),'version_checked'=> $wp_version,);
-}
-add_filter('pre_site_transient_update_core','remove_core_updates');
-add_filter('pre_site_transient_update_plugins','remove_core_updates');
-add_filter('pre_site_transient_update_themes','remove_core_updates');
-
-add_action( 'admin_init', 'wpse_38111' );
-function wpse_38111() {
-    remove_submenu_page( 'index.php', 'update-core.php' );
-}
-
